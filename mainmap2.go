@@ -1,38 +1,58 @@
+/*
+В ходе анализа результатов переписи населения информация была сохранена в объекте типа map:
+
+groupCity := map[int][]string{
+	10:   []string{...}, // города с населением 10-99 тыс. человек
+	100:  []string{...}, // города с населением 100-999 тыс. человек
+	1000: []string{...}, // города с населением 1000 тыс. человек и более
+}
+При подготовке важного отчета о городах с населением 100-999 тыс. человек был подготовлен другой объект типа map:
+
+cityPopulation := map[string]int{
+	город: население города в тысячах человек,
+}
+Однако база данных с информацией о точной численности населения содержала ошибки, поэтому в cityPopulation в т.ч. была сохранена информация о городах, которые входят в другие группы из groupCity.
+
+Ваша программа имеет доступ к обоим указанным отображениям, требуется исправить cityPopulation, чтобы в ней была сохранена информация только о городах из группы groupCity[100].
+
+Функция main() уже объявлена, доступ к отображениям осуществляется по указанным именам. По результатам выполнения ничего больше делать не требуется, проверка будет осуществлена автоматически.
+*/
+
+
 package main
 
 import (
 	"fmt"
-	"strconv"
-	"unicode"
 )
 
 func main() {
-	a := "%^80"
-	b := "hhhhh20&&&&nd"
+	groupCity := map[int][]string{
+		10:   []string{"Деревня", "Село"}, // города с населением 10-99 тыс. человек
+		100:  []string{"Город", "Большой город"}, // города с населением 100-999 тыс. человек
+		1000: []string{"Миллионик"}, // города с населением 1000 тыс. человек и более
+	 }
+	 cityPopulation := map[string]int{
+		"Город" : 50,
+		"Село" : 100,
+		"Миллионик" : 500,
+	 }
+	result := false
+	for value1, _ := range cityPopulation {
+		fmt.Print(value1)
+		for _, value2 := range groupCity[100] {
+			fmt.Print(value2)
+			if value1 == value2 {
+				result = true
+				break 
+			} else {result = false}
 
-	fmt.Print(adding(a,b))
-	//fmt.Print(strconv.ParseInt(a,10,0))
+		}
+		if result == false {
+			delete(cityPopulation, value1)
+		}
+	}
+	
+	fmt.Print(cityPopulation)
+	
 }
 
-func adding(a,b string) int {
-	var aRed, bRed string
-	for _, aRes := range a {
-		if unicode.IsDigit(aRes) {
-			aRed += string(aRes)
-		}
-		
-	}
-	for _, bRes := range b {
-		if unicode.IsDigit(bRes) {
-			bRed += string(bRes)
-		}
-		
-	}
-    aInt, err1 := strconv.Atoi(aRed)
-    bInt, err2 := strconv.Atoi(bRed)
-	if err2 != nil && err1 != nil {
-		panic(err1)
-    } else {
-		return aInt + bInt 
-	}
-}

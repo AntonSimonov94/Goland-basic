@@ -1,3 +1,12 @@
+/*
+Дается строка. Нужно удалить все символы, которые встречаются более одного раза и вывести получившуюся строку
+
+Sample Input:
+zaabcbd
+Sample Output:
+zcd
+*/
+
 package main
 import (
 	"fmt"
@@ -16,4 +25,3 @@ func main () {
 	}
 	fmt.Print(text2)
 }
-//zaabcbd
